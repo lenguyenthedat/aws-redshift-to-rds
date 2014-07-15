@@ -20,7 +20,8 @@ executable copytables
     bytestring,
     optparse-applicative,
     string-conversions,
-    interpolate
+    interpolate,
+    configurator
   ghc-options:
     -Wall -Werror -fno-warn-name-shadowing
     -threaded
