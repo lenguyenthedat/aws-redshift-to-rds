@@ -12,12 +12,12 @@ import Control.Applicative
 import System.Exit
 import Control.Exception
 import Data.String.Interpolate
-import Database.PostgreSQL.Simple
 import Database.PostgreSQL.Simple.FromRow
 import Data.String
 import GHC.Int
 
 import Options
+import DB
 
 
 run :: [String] -> IO ExitCode
