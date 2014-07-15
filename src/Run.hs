@@ -114,7 +114,7 @@ mapType :: Column -> String
 mapType (Column _ "numeric" Nothing (Just precision) (Just scale)) =
     [i|numeric(#{precision}, #{scale})|]
 mapType (Column _ "character varying" (Just length) Nothing Nothing) =
-    [i|character varying(#{length})|]
+    [i|character varying(#{max 1 length})|]
 mapType (Column _ "smallint" _ (Just 16) (Just 0)) = "smallint"
 mapType (Column _ "integer" _ (Just 32) (Just 0)) = "integer"
 mapType (Column _ "bigint" _ (Just 64) (Just 0)) = "bigint"
