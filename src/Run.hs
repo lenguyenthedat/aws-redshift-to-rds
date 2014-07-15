@@ -15,6 +15,7 @@ import Data.String.Interpolate
 import Database.PostgreSQL.Simple.FromRow
 import Data.String
 import GHC.Int
+import Control.Monad
 
 import Options
 import DB
@@ -39,6 +40,8 @@ mirror :: String -> String -> Table -> Table -> IO Int64
 mirror redshiftConnectionString rdsConnectionString from to = do
   sourceColumns :: [Column] <- withRedshift redshiftConnectionString $
     readColumns from
+  when (null sourceColumns) $
+    throwIO $ ErrorCall [i|table #{from} does not exist|]
   withRds rdsConnectionString $ \ rds -> do
     withTransaction rds $ do
       _ <- execute_ rds "CREATE EXTENSION IF NOT EXISTS dblink;"
