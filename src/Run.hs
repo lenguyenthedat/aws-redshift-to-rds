@@ -104,7 +104,11 @@ makeTempTableName :: Table -> Table
 makeTempTableName (Table table_schema table_name) = Table table_schema ("tmp_" ++ table_name)
 
 columnNames :: [Column] -> String
-columnNames = intercalate ", " . map column_name
+columnNames = intercalate ", " . map columnSelector
+  where
+    columnSelector :: Column -> String
+    columnSelector c | data_type c == "date" = "(" ++ "\"" ++ column_name c ++ "\"" ++ "::varchar)"
+    columnSelector c = "\"" ++  column_name c ++ "\""
 
 columnNamesAndTypes :: [Column] -> String
 columnNamesAndTypes =
