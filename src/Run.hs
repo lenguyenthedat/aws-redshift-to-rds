@@ -112,7 +112,7 @@ columnNames = intercalate ", " . map columnSelector
 
 columnNamesAndTypes :: [Column] -> String
 columnNamesAndTypes =
-    intercalate ", " . map (\ c -> column_name c ++ " " ++ mapType c)
+    intercalate ", " . map (\ c -> "\"" ++  column_name c ++ "\"" ++ " " ++ mapType c)
 
 -- | Maps redshift types to rds types.
 --   This is by no means a complete mapping. We have to adjust this
