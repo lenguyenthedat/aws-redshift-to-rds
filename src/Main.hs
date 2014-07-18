@@ -2,10 +2,10 @@
 module Main where
 
 
-import System.Environment
-import System.Exit
+import           System.Environment
+import           System.Exit
 
-import Run
+import           Run
 
 
 main :: IO ()

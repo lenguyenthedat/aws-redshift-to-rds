@@ -6,14 +6,16 @@ module DB (
   ) where
 
 
-import Prelude hiding (log)
-import System.IO
-import qualified Database.PostgreSQL.Simple as P
-import Database.PostgreSQL.Simple as Reexported hiding (execute_, query)
-import GHC.Int
-import Control.Monad
-import Data.String.Conversions
-import Database.PostgreSQL.Simple.Types (fromQuery)
+import           Control.Monad
+import           Data.String.Conversions
+import           Database.PostgreSQL.Simple       as Reexported hiding
+                                                                 (execute_,
+                                                                 query)
+import qualified Database.PostgreSQL.Simple       as P
+import           Database.PostgreSQL.Simple.Types (fromQuery)
+import           GHC.Int
+import           Prelude                          hiding (log)
+import           System.IO
 
 
 debug :: Bool

@@ -1,24 +1,25 @@
-{-# LANGUAGE QuasiQuotes, ScopedTypeVariables, OverloadedStrings #-}
+{-# LANGUAGE OverloadedStrings, QuasiQuotes, ScopedTypeVariables #-}
 
 module Run where
 
 
-import Data.String.Conversions
-import Data.ByteString as BS (ByteString, concatMap, pack)
-import Data.List
-import System.IO
-import Data.Char
-import Control.Applicative
-import System.Exit
-import Control.Exception
-import Data.String.Interpolate
-import Database.PostgreSQL.Simple.FromRow
-import Data.String
-import GHC.Int
-import Control.Monad
+import           Control.Applicative
+import           Control.Exception
+import           Control.Monad
+import           Data.ByteString                    as BS (ByteString,
+                                                           concatMap, pack)
+import           Data.Char
+import           Data.List
+import           Data.String
+import           Data.String.Conversions
+import           Data.String.Interpolate
+import           Database.PostgreSQL.Simple.FromRow
+import           GHC.Int
+import           System.Exit
+import           System.IO
 
-import Options
-import DB
+import           DB
+import           Options
 
 
 run :: [String] -> IO ExitCode

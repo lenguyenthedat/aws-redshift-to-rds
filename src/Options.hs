@@ -3,15 +3,14 @@
 module Options where
 
 
-import Data.Char
-import Data.String.Conversions
-import Data.Configurator
-import Data.Configurator.Types
-import System.IO
-import System.Environment
-import System.Exit
-
-import Options.Applicative
+import           Data.Char
+import           Data.Configurator
+import           Data.Configurator.Types
+import           Data.String.Conversions
+import           Options.Applicative
+import           System.Environment
+import           System.Exit
+import           System.IO
 
 
 withOptions :: [String] -> (CopyTableOptions -> IO ExitCode) -> IO ExitCode
