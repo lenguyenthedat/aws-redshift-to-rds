@@ -64,12 +64,13 @@ data Column = Column {
     data_type :: String,
     character_maximum_length :: Maybe Int,
     numeric_precision :: Maybe Int,
+    numeric_precision_radix :: Maybe Int,
     numeric_scale :: Maybe Int
   }
     deriving Show
 
 instance FromRow Column where
-    fromRow = Column <$> field <*> field <*> field <*> field <*> field
+    fromRow = Column <$> field <*> field <*> field <*> field <*> field <*> field
 
 withRedshift :: String -> (Connection -> IO a) -> IO a
 withRedshift connectionString = bracket
@@ -89,6 +90,7 @@ readColumns table db = do
             data_type,
             character_maximum_length,
             numeric_precision,
+            numeric_precision_radix,
             numeric_scale
         FROM information_schema.columns
         WHERE
@@ -119,16 +121,17 @@ columnNamesAndTypes =
 --   This is by no means a complete mapping. We have to adjust this
 --   function in case of new mirrored tables / schema changes.
 mapType :: Column -> String
-mapType (Column _ "numeric" Nothing (Just precision) (Just scale)) =
+mapType (Column _ "numeric" Nothing (Just precision) _ (Just scale)) =
     [i|numeric(#{precision}, #{scale})|]
-mapType (Column _ "character varying" (Just length) Nothing Nothing) =
-    [i|character varying(#{max 1 length})|]
-mapType (Column _ "double precision" Nothing (Just precision) Nothing) =
-    [i|double precision(#{precision})|]
-mapType (Column _ "smallint" _ (Just 16) (Just 0)) = "smallint"
-mapType (Column _ "integer" _ (Just 32) (Just 0)) = "integer"
-mapType (Column _ "bigint" _ (Just 64) (Just 0)) = "bigint"
-mapType (Column _ data_type Nothing Nothing Nothing) | data_type `elem` allowedTypes =
+mapType (Column _ "character varying" (Just length) Nothing _ Nothing) =
+    [i|character varying(#{length})|]
+mapType (Column _ "smallint" _ (Just 16) _ (Just 0)) = "smallint"
+mapType (Column _ "integer" _ (Just 32) _ (Just 0)) = "integer"
+mapType (Column _ "bigint" _ (Just 64) _ (Just 0)) = "bigint"
+mapType (Column _ "double precision" Nothing (Just 53) (Just 2) Nothing) =
+    "double precision"
+mapType (Column _ data_type Nothing Nothing Nothing Nothing)
+  | data_type `elem` allowedTypes =
     data_type
   where
     allowedTypes =
