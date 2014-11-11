@@ -18,7 +18,7 @@ executable copytables
     postgresql-simple,
     safe,
     bytestring,
-    optparse-applicative,
+    optparse-applicative==0.9.*,
     string-conversions,
     interpolate,
     configurator
