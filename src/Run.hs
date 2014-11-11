@@ -94,8 +94,8 @@ readColumns table db = do
             numeric_scale
         FROM information_schema.columns
         WHERE
-            table_schema = ? AND
-            table_name = ?
+            table_schema ilike ? AND
+            table_name ilike ?
         ORDER BY ordinal_position
         |])
         [table_schema table, table_name table]
