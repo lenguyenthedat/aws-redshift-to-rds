@@ -53,7 +53,7 @@ mirror redshiftConnectionString rdsConnectionString from to = do
           AS tmp_#{table_name to}(#{columnNamesAndTypes sourceColumns});
         |]
       _ <- execute_ rds $ fromString $ [i|
-        DROP TABLE IF EXISTS #{to};
+        DROP TABLE IF EXISTS #{to} CASCADE;
         ALTER TABLE #{makeTempTableName to} RENAME TO #{table_name to};
         |]
       return n
