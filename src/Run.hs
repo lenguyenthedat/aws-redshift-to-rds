@@ -32,13 +32,14 @@ run args = withOptions args $ \ options -> do
         (toConnectionString options)
         (fromTable options)
         (toTable options)
+        (cascade options)
       logMessageLn [i|copied #{n} rows.|]
       return ExitSuccess
     _ -> throwIO $ ErrorCall
       [i|mirroring from #{fromType options} to #{toType options} is not yet supported.|]
 
-mirror :: String -> String -> Table -> Table -> IO Int64
-mirror redshiftConnectionString rdsConnectionString from to = do
+mirror :: String -> String -> Table -> Table -> Bool -> IO Int64
+mirror redshiftConnectionString rdsConnectionString from to cascade = do
   sourceColumns :: [Column] <- withRedshift redshiftConnectionString $
     readColumns from
   when (null sourceColumns) $
@@ -53,7 +54,7 @@ mirror redshiftConnectionString rdsConnectionString from to = do
           AS tmp_#{table_name to}(#{columnNamesAndTypes sourceColumns});
         |]
       _ <- execute_ rds $ fromString $ [i|
-        DROP TABLE IF EXISTS #{to} CASCADE;
+        DROP TABLE IF EXISTS #{to} #{if cascade then ("CASCADE"::String) else ""};
         ALTER TABLE #{makeTempTableName to} RENAME TO #{table_name to};
         |]
       return n
