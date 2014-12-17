@@ -47,7 +47,9 @@ data CopyTableOptions
 
     toType :: DBType,
     toConnectionString :: String,
-    toTable :: Table
+    toTable :: Table,
+
+    cascade :: Bool
   }
   -- used for reading options from a config file
   | ConfigFileOptions {
@@ -55,7 +57,9 @@ data CopyTableOptions
     fromTable :: Table,
 
     to :: String,
-    toTable :: Table
+    toTable :: Table,
+
+    cascade :: Bool
   }
     deriving Show
 
@@ -84,7 +88,9 @@ parser =
       tableOption "from-table" <*>
 
       nameOption "to" <*>
-      tableOption "to-table"
+      tableOption "to-table" <*>
+
+      cascadeOption
 
     fullOptions :: Parser CopyTableOptions
     fullOptions = FullOptions <$>
@@ -94,7 +100,9 @@ parser =
 
       typeOption "to-type" <*>
       connectionStringOption "to-db" <*>
-      tableOption "to-table"
+      tableOption "to-table" <*>
+
+      cascadeOption
 
     nameOption :: String -> Parser String
     nameOption option = strOption (
@@ -132,12 +140,17 @@ parser =
       (schema, '.' : name) -> Table schema name
       _ -> error ("invalid table format: " ++ s)
 
+    cascadeOption :: Parser Bool
+    cascadeOption = switch (
+        long "cascade" <>
+        short 'c' <>
+        help "drop cascade destination table.")
 
 -- | Internally only 'FullOptions' are used. This function converts 'ConfigFileOptions'
 -- into 'FullOptions' by reading the config file.
 convertToFullOptions :: CopyTableOptions -> IO CopyTableOptions
 convertToFullOptions o@FullOptions{} = return o
-convertToFullOptions ConfigFileOptions{from, to, fromTable, toTable} = do
+convertToFullOptions ConfigFileOptions{from, to, fromTable, toTable, cascade} = do
   config <- load [Required "copytables.config"]
   fromType <- require config (cs from <> ".type")
   fromConnectionString <- require config (cs from <> ".connection")
@@ -150,5 +163,7 @@ convertToFullOptions ConfigFileOptions{from, to, fromTable, toTable} = do
 
     toType = toType,
     toConnectionString = toConnectionString,
-    toTable = toTable
+    toTable = toTable,
+
+    cascade = cascade
    }
