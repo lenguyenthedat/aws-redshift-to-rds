@@ -151,7 +151,7 @@ parser =
 convertToFullOptions :: CopyTableOptions -> IO CopyTableOptions
 convertToFullOptions o@FullOptions{} = return o
 convertToFullOptions ConfigFileOptions{from, to, fromTable, toTable, cascade} = do
-  config <- load [Required "copytables.config"]
+  config <- load [Required "./config/copytables.config"]
   fromType <- require config (cs from <> ".type")
   fromConnectionString <- require config (cs from <> ".connection")
   toType <- require config (cs to <> ".type")

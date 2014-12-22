@@ -1,0 +1,9 @@
+redshift_name {
+  type = "redshift"
+  connection = "user='' password='' host='' port= dbname=''"
+}
+
+rds_name {
+  type = "rds"
+  connection = "user='' password='' host='' port= dbname=''"
+}

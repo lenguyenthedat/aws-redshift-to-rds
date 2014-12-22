@@ -1,9 +1,0 @@
-redshift_name {
-  type = "redshift"
-  connection = "redshift connection string"
-}
-
-rds_name {
-  type = "rds"
-  connection = "rds connection string"
-}
