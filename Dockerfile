@@ -49,6 +49,7 @@ RUN sed -E 's/(-- )?(library-profiling: )False/\2True/' < ~/.cabal/config.old > 
 RUN locale-gen en_US.UTF-8
 RUN export LC_ALL='en_US.UTF-8'
 ENV LC_ALL en_US.UTF-8
+RUN cabal install -j happy
 
 # install some dependencies
 RUN apt-get install -y libpq-dev
