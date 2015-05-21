@@ -77,7 +77,7 @@ parser =
     info (helper <*> bothOptions)
       (fullDesc
        <> progDesc "Copy a table from one database to another"
-       <> header "copytables - a tool for copying tables between different databases")
+       <> header "aws-redshift-to-rds - a tool to copy tables from Amazon Redshift to Amazon RDS (PostgreSQL)")
   where
     bothOptions :: Parser CopyTableOptions
     bothOptions = fullOptions <|> configFileOptions
@@ -108,7 +108,7 @@ parser =
     nameOption option = strOption (
       long option <>
       metavar "DB_NAME" <>
-      help "name of the database to use. named databases have to be configured in 'copytables.config'.")
+      help "name of the database to use. named databases have to be configured in 'aws-redshift-to-rds.config'.")
 
     typeOption :: String -> Parser DBType
     typeOption name = readDBType <$> strOption (
@@ -151,7 +151,7 @@ parser =
 convertToFullOptions :: CopyTableOptions -> IO CopyTableOptions
 convertToFullOptions o@FullOptions{} = return o
 convertToFullOptions ConfigFileOptions{from, to, fromTable, toTable, cascade} = do
-  config <- load [Required "./config/copytables.config"]
+  config <- load [Required "./config/aws-redshift-to-rds.config"]
   fromType <- require config (cs from <> ".type")
   fromConnectionString <- require config (cs from <> ".connection")
   toType <- require config (cs to <> ".type")

@@ -1,31 +1,35 @@
-copytables
+aws-redshift-to-rds
 ==========
 
-Library and tool to copy tables from one database to another.
+A tool to copy tables from Amazon Redshift to Amazon RDS (PostgreSQL).
+
+This tool should also work as long as the upstream database is PostgreSQL 8.0+ and the downstream database is PostgreSQL 9.0+ (where DBLink is supported).
 
 ## Prerequisites
 
-    + Ubuntu (preferably 12.04)
+    + Ubuntu (preferably 14.04)
 
-    + GHC 7.6.3 or later
+    + GHC 7.8.3 or later
 
-    + Cabal 1.19.2 or later
+    + Cabal 1.20.0.2 or later
 
     + Happy 1.19 or later
 
 ## Clone and build:
 
     Clone the repo:
-    $ git clone https://github.com/zalora/copytables.git
+    $ git clone https://github.com/lenguyenthedat/aws-redshift-to-rds.git
 
     Build with Docker (remember to configure your credentials first in ./config folder)
-    $ cd copytables/
-    $ sudo docker build -t="copytables" .
+    $ cd aws-redshift-to-rds/
+    $ sudo docker build -t="aws-redshift-to-rds" .
 
-## Executables (to run with Docker: use `docker run copytables` as a prefix for the below commands)
+## Executables
+
+(to run with Docker: use `docker run aws-redshift-to-rds` as a prefix for the below commands)
 
     Show help
-    .cabal-sandbox/bin/copytables --help
+    .cabal-sandbox/bin/aws-redshift-to-rds --help
 
     Copy table
-    .cabal-sandbox/bin/copytables --from source_db --from-table schema_name.table_name --to destination_db --to-table schema_name.table_name [--cascade]
+    .cabal-sandbox/bin/aws-redshift-to-rds --from source_db --from-table schema_name.table_name --to destination_db --to-table schema_name.table_name [--cascade]

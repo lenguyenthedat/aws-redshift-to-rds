@@ -1,4 +1,4 @@
-FROM ubuntu:12.04
+FROM ubuntu:14.04
 
 ENV HOME /root
 ENV DEBIAN_FRONTEND noninteractive
@@ -55,13 +55,13 @@ RUN cabal install -j happy
 RUN apt-get install -y libpq-dev
 
 # copy code to container
-RUN mkdir -p ${HOME}/copytables
-COPY src ${HOME}/copytables/src
-COPY copytables.cabal ${HOME}/copytables/
-COPY LICENSE ${HOME}/copytables/
-WORKDIR ${HOME}/copytables
+RUN mkdir -p ${HOME}/aws-redshift-to-rds
+COPY src ${HOME}/aws-redshift-to-rds/src
+COPY aws-redshift-to-rds.cabal ${HOME}/aws-redshift-to-rds/
+COPY LICENSE ${HOME}/aws-redshift-to-rds/
+WORKDIR ${HOME}/aws-redshift-to-rds
 RUN cabal sandbox init
 RUN cabal install
 
 # copy config and credendtial files
-COPY config ${HOME}/copytables/config
+COPY config ${HOME}/aws-redshift-to-rds/config
