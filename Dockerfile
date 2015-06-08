@@ -57,7 +57,7 @@ RUN apt-get install -y libpq-dev
 # copy code to container
 RUN mkdir -p /root/aws-redshift-to-rds
 COPY src /root/aws-redshift-to-rds/src
-COPY aws-redshift-to-rds.cabal ${HOME}/aws-redshift-to-rds/
+COPY aws-redshift-to-rds.cabal /root/aws-redshift-to-rds/
 COPY LICENSE /root/aws-redshift-to-rds/
 WORKDIR /root/aws-redshift-to-rds
 RUN cabal sandbox init
