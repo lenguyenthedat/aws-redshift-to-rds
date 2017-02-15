@@ -1,7 +1,6 @@
 name:             aws-redshift-to-rds
 version:          0.1.0
 author:           Dat Le
-maintainer:       thedat.lenguyen@gmail.com
 category:         Database
 build-type:       Simple
 cabal-version:    >= 1.10
